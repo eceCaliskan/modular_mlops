@@ -4,13 +4,13 @@ provider "aws" {
 }
 
 #Creating the S3 bucket
-resource "aws_s3_bucket" "bucket" {
-  bucket = "modular_mlops_bucket"
+resource "aws_s3_bucket" "modular_mlops_bucket" {
+  bucket = "modular-mlops-bucket"
 }
 
 #Trigger S3 bucket to send notification when a new file added
 resource "aws_s3_bucket_notification" "bucket_notification" {
-  bucket = aws_s3_bucket.bucket.id
+  bucket = aws_s3_bucket.modular_mlops_bucket.id
 
   lambda_function {
     lambda_function_arn = aws_lambda_function.func.arn
