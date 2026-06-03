@@ -8,6 +8,11 @@
     }
   }
 
+import {                                                                                                                                                                      
+   to = module.infrastructure.aws_iam_role.lambda_exec                                                                                                                                          
+   id = "lambda_exec_role"                                                                                                                                                     
+}     
+
 #Define AWS provider
   provider "aws" {
     region = "us-east-1"
