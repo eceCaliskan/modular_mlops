@@ -1,6 +1,6 @@
 #source https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/
 #Setting up the lambda function
-resource "aws_lambda_function" "trigger_ec2" {
+resource "aws_lambda_function" "my_function" {
     filename         = "${path.module}/function.zip"
     function_name    = "my-function"
     role             = aws_iam_role.lambda_exec.arn
