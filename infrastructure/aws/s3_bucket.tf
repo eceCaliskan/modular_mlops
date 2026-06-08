@@ -24,8 +24,8 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
   lambda_function {
     lambda_function_arn = aws_lambda_function.my_function.arn
     events              = ["s3:ObjectCreated:*"]
-    filter_prefix       = "AWSLogs/"
-    filter_suffix       = ".log"
+    filter_prefix       = "dataset/"
+    filter_suffix       = ".csv"
   }
 }
 
