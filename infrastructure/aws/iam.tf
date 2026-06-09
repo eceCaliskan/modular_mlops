@@ -10,10 +10,55 @@ resource "aws_iam_role" "lambda_exec" {
         Principal = {
           Service = "lambda.amazonaws.com"
         }
-      }
+      },
     ]
   })
 }
+
+resource "aws_iam_role" "ec2_exec" {
+  name = "ec2_exec_role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "ec2_exec" {
+    name = "ec2_exec"
+    role = aws_iam_role.ec2_exec.id
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect   = "Allow"
+          Action   = ["s3:GetObject",
+                      "s3:PutObject",
+                      "ssm:GetParameter",
+                      "s3-object-lambda:Get*",
+                      "s3-object-lambda:List*"
+                    ]
+          Resource = "*"
+        }
+      ]
+    })
+  }
+
+
+  resource "aws_iam_instance_profile" "ec2_profile" {
+    name = "ec2_instance_profile"
+    role = aws_iam_role.ec2_exec.name
+  }
+
 
  resource "aws_iam_role_policy" "lambda_ec2_start" {
     name = "lambda_ec2_start"
@@ -24,7 +69,7 @@ resource "aws_iam_role" "lambda_exec" {
       Statement = [
         {
           Effect   = "Allow"
-          Action   = ["ec2:StartInstances", "ec2:StopInstances", "ec2:DescribeInstances"]
+          Action   = ["ec2:StartInstances", "ec2:StopInstances", "ec2:DescribeInstances", "ssm:PutParameter"]
           Resource = "*"
         }
       ]
