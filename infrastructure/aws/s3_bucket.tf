@@ -29,3 +29,9 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
   }
 }
 
+resource "aws_s3_bucket_versioning" "versioning_example" {
+  bucket = aws_s3_bucket.modular_mlops_bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
