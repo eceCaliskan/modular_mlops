@@ -5,13 +5,12 @@
         source  = "hashicorp/aws"
         version = "~> 6.0"
       }
+      google = {
+        source  = "hashicorp/google"
+        version = "~> 6.0"
+      }
     }
   }
-
-# import {                                                                                                                                                                      
-#    to = module.infrastructure.aws_iam_role.lambda_exec                                                                                                                                          
-#    id = "lambda_exec_role"                                                                                                                                                     
-# }     
 
 #Define AWS provider
   provider "aws" {
@@ -21,4 +20,14 @@
 #Pointing to AWS folder
   module "infrastructure" {
     source = "./infrastructure/aws"
+  }
+
+  #Pointing to GCP folder
+  module "infrastructure2" {
+    source = "./infrastructure/gcp"
+  }
+
+   provider "google" {
+    project = "project-a280d5fe-bdeb-4fbe-aa0" ## CHANGE WITH THE ACTUAL PROJECT ID
+    region  = "us-central1"
   }
