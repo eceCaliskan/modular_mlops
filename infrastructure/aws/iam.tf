@@ -69,7 +69,7 @@ resource "aws_iam_role_policy" "ec2_exec" {
       Statement = [
         {
           Effect   = "Allow"
-          Action   = ["ec2:StartInstances", "ec2:StopInstances", "ec2:DescribeInstances", "ssm:PutParameter"]
+          Action   = ["ec2:StartInstances", "ec2:StopInstances", "ec2:DescribeInstances", "ssm:PutParameter", "ssm:SendCommand"]
           Resource = "*"
         }
       ]
@@ -81,3 +81,8 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+resource "aws_iam_role_policy_attachment" "ec2_ssm" {                                                                                                        
+  role       = aws_iam_role.ec2_exec.name                                                                                                                    
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"                                                                                        
+}                                                                                                                                                            
+          
