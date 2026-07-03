@@ -7,4 +7,5 @@ resource "aws_lambda_function" "my_function" {
     handler          = "function.lambda_handler"
     runtime          = "python3.12"
     source_code_hash = filebase64sha256("${path.module}/function.zip")
+    timeout          = 300
   }
