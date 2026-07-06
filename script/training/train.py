@@ -96,6 +96,10 @@ x,y = preprocess(df)
 model, accuracy, f1 = train(x, y)
 oldaccuracy, oldf1 = get_old_champion_details()
 save_model(model, accuracy)
-register_model(f1, accuracy, model)
+
+if old_champion is None or (oldaccuracy <= accuracy and oldf1 <= f1):
+    register_model(f1, accuracy, model)
+else:
+    print(f"New model did not beat champion accuracy: {accuracy:.4f} vs {oldaccuracy:.4f}")
 
 
