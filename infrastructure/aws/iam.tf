@@ -45,7 +45,9 @@ resource "aws_iam_role_policy" "ec2_exec" {
                       "s3:PutObject",
                       "ssm:GetParameter",
                       "s3-object-lambda:Get*",
-                      "s3-object-lambda:List*"
+                      "s3-object-lambda:List*",
+                      "ec2:DescribeInstances",
+                      "ec2:StopInstances"
                     ]
           Resource = "*"
         }
