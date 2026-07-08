@@ -36,6 +36,24 @@ resource "aws_security_group" "allow_mlflow" {
      cidr_blocks = ["0.0.0.0/0"]                                                                                                                            
    }                                                                                                                                                        
  }   
+ resource "aws_security_group" "allow_fastapi" {                                                                                                                
+    name        = "allow_fastapi"                                                                                                                                
+    description = "Allow SSH inbound"                                                                                                                        
+                                                                                                                                                             
+   ingress {                                                                                                                                                
+      from_port   = 8000                                                                                                                                       
+      to_port     = 8000                                                                                                                                       
+     protocol    = "tcp"                                                                                                                                    
+      cidr_blocks = ["0.0.0.0/0"]                                                                                                                            
+   }                                                                                                                                                        
+                                                                                                                                                            
+   egress {                                                                                                                                                 
+     from_port   = 0                                                                                                                                        
+     to_port     = 0                                                                                                                                        
+     protocol    = "-1"                                                                                                                                     
+     cidr_blocks = ["0.0.0.0/0"]                                                                                                                            
+   }                                                                                                                                                        
+ }   
 
 #Create EC2 instance
 module "ec2_instance" {
@@ -64,13 +82,13 @@ module "ec2_instance2" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   name = "Monitoring"
   tags = {Purpose = "Monitoring"}
-  instance_type = "t3.micro"
+  instance_type = "t3.small"
   associate_public_ip_address = true    
   monitoring    = true
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
   user_data = file("${path.module}/user-data.sh")   
   user_data_replace_on_change = true
-  vpc_security_group_ids = [aws_security_group.allow_mlflow.id, aws_security_group.allow_ssh.id]     
+  vpc_security_group_ids = [aws_security_group.allow_mlflow.id, aws_security_group.allow_ssh.id, aws_security_group.allow_fastapi.id]     
   key_name      = "mlops-key"                                 
   subnet_id     = "subnet-07d5896f8f57e5fab"
 }

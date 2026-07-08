@@ -3,7 +3,9 @@
 yum update -y
 
 yum install python3-pip -y
-python3 -m pip install mlflow --ignore-installed requests        
+python3 -m pip install boto3 fastapi[standard] gunicorn mlflow --ignore-installed requests        
+python3 -c "import boto3; boto3.client('s3', region_name='us-east-1').download_file('modular-mlops-bucket', 'scripts/deploy.py','main.py')"
+
 mkdir /mlflow
 
 nohup mlflow server \
@@ -12,3 +14,7 @@ nohup mlflow server \
   --backend-store-uri sqlite:///mlflow.db \
   --default-artifact-root /mlflow \
   >/var/log/mlflow.log 2>&1 &
+
+
+nohup gunicorn main:app  -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 \
+  > gunicorn.log 2>&1 &
