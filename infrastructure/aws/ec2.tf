@@ -40,7 +40,7 @@ resource "aws_security_group" "allow_mlflow" {
 #Create EC2 instance
 module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
-  name = "single-instance"
+  name = "Training"
   instance_type = "t3.micro"
   associate_public_ip_address = true    
   monitoring    = true
@@ -56,31 +56,21 @@ module "ec2_instance" {
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]     
   key_name      = "mlops-key"                                 
   subnet_id     = "subnet-07d5896f8f57e5fab"
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
+  tags = {Purpose = "Training"}
 }
 
 #Create EC2 instance
 module "ec2_instance2" {
   source  = "terraform-aws-modules/ec2-instance/aws"
-  name = "single-instance2"
+  name = "Monitoring"
+  tags = {Purpose = "Monitoring"}
   instance_type = "t3.micro"
   associate_public_ip_address = true    
   monitoring    = true
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
-  user_data = <<-EOL
-    sudo yum install python3-pip -y
-    sudo pip3 install mlflow --ignore-installed requests 
-    nohup mlflow server --host 0.0.0.0 --port 8080 > /tmp/mlflow.log 2>&1 &
-  EOL
+  user_data = file("${path.module}/user-data.sh")   
   user_data_replace_on_change = true
   vpc_security_group_ids = [aws_security_group.allow_mlflow.id, aws_security_group.allow_ssh.id]     
   key_name      = "mlops-key"                                 
   subnet_id     = "subnet-07d5896f8f57e5fab"
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
 }
