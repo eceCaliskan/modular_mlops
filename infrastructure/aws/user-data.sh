@@ -16,5 +16,5 @@ nohup mlflow server \
   >/var/log/mlflow.log 2>&1 &
 
 
-nohup gunicorn main:app  -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 \
+nohup gunicorn main:app  -w 2 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 \
   > gunicorn.log 2>&1 &
