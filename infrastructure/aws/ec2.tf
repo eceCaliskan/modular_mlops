@@ -54,6 +54,24 @@ resource "aws_security_group" "allow_mlflow" {
      cidr_blocks = ["0.0.0.0/0"]                                                                                                                            
    }                                                                                                                                                        
  }   
+ resource "aws_security_group" "allow_grafana" {                                                                                                                
+    name        = "allow_grafana"                                                                                                                                
+    description = "Allow SSH inbound"                                                                                                                        
+                                                                                                                                                             
+   ingress {                                                                                                                                                
+      from_port   = 3000                                                                                                                                       
+      to_port     = 3000                                                                                                                                       
+     protocol    = "tcp"                                                                                                                                    
+      cidr_blocks = ["0.0.0.0/0"]                                                                                                                            
+   }                                                                                                                                                        
+                                                                                                                                                            
+   egress {                                                                                                                                                 
+     from_port   = 0                                                                                                                                        
+     to_port     = 0                                                                                                                                        
+     protocol    = "-1"                                                                                                                                     
+     cidr_blocks = ["0.0.0.0/0"]                                                                                                                            
+   }                                                                                                                                                        
+ }   
 
 #Create EC2 instance
 module "ec2_instance" {
@@ -88,7 +106,7 @@ module "ec2_instance2" {
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
   user_data = file("${path.module}/user-data.sh")   
   user_data_replace_on_change = true
-  vpc_security_group_ids = [aws_security_group.allow_mlflow.id, aws_security_group.allow_ssh.id, aws_security_group.allow_fastapi.id]     
+  vpc_security_group_ids = [aws_security_group.allow_mlflow.id, aws_security_group.allow_ssh.id, aws_security_group.allow_fastapi.id, aws_security_group.allow_grafana.id]     
   key_name      = "mlops-key"                                 
   subnet_id     = "subnet-07d5896f8f57e5fab"
 }
