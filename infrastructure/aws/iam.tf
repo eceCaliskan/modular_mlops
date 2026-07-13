@@ -43,6 +43,8 @@ resource "aws_iam_role_policy" "ec2_exec" {
           Effect   = "Allow"
           Action   = ["s3:GetObject",
                       "s3:PutObject",
+                      "s3:ListBucket",                                                                                                                                                  
+                      "s3:DeleteObject",  
                       "ssm:GetParameter",
                       "s3-object-lambda:Get*",
                       "s3-object-lambda:List*",
@@ -71,7 +73,12 @@ resource "aws_iam_role_policy" "ec2_exec" {
       Statement = [
         {
           Effect   = "Allow"
-          Action   = ["ec2:StartInstances", "ec2:StopInstances", "ec2:DescribeInstances", "ssm:PutParameter", "ssm:SendCommand"]
+          Action   = ["ec2:StartInstances", 
+                      "ec2:StopInstances", 
+                      "ec2:DescribeInstances", 
+                      "ssm:PutParameter", 
+                      "ssm:SendCommand"
+                     ]
           Resource = "*"
         }
       ]
