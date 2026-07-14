@@ -60,6 +60,65 @@ StandardError=append:/var/log/deployment.log
 WantedBy=multi-user.target
 EOF
 
+useradd --system loki || true
+mkdir -p /etc/loki
+mkdir -p /var/lib/loki
+cd /tmp
+wget https://github.com/grafana/loki/releases/latest/download/loki-linux-amd64.zip
+unzip loki-linux-amd64.zip
+mv loki-linux-amd64 /usr/local/bin/loki
+chmod +x /usr/local/bin/loki
+sudo tee /etc/loki/config.yaml << 'EOF'
+auth_enabled: false                         
+                                        
+server:
+  http_listen_port: 3100                                                                                                                                      
+  
+common:                                                                                                                                                       
+  path_prefix: /var/lib/loki                                                                                                                                
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+
+schema_config:
+  configs:
+    - from: 2024-01-01
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+
+storage_config:
+  filesystem:
+    directory: /var/lib/loki/chunks
+
+limits_config:
+  allow_structured_metadata: true
+EOF
+
+cat >/etc/systemd/system/loki.service <<EOF
+[Unit]
+Description=Loki
+After=network.target
+
+[Service]
+User=loki
+ExecStart=/usr/local/bin/loki -config.file=/etc/loki/config.yaml
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+chown -R loki:loki /etc/loki
+chown -R loki:loki /var/lib/loki
+
+systemctl daemon-reload
+systemctl enable loki
+systemctl start loki
 systemctl daemon-reload
 systemctl enable mlflow fastapi grafana-server
 systemctl start mlflow

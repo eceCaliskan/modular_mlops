@@ -57,7 +57,13 @@ resource "aws_security_group" "allow_mlflow" {
  resource "aws_security_group" "allow_grafana" {                                                                                                                
     name        = "allow_grafana"                                                                                                                                
     description = "Allow SSH inbound"                                                                                                                        
-                                                                                                                                                             
+
+     ingress {                                                                                                                                                
+      from_port   = 3100                                                                                                                                       
+      to_port     = 3100                                                                                                                                       
+     protocol    = "tcp"                                                                                                                                    
+      cidr_blocks = ["0.0.0.0/0"]                                                                                                                            
+   }                                                                                                                                                
    ingress {                                                                                                                                                
       from_port   = 3000                                                                                                                                       
       to_port     = 3000                                                                                                                                       
