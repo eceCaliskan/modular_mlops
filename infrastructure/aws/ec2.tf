@@ -87,14 +87,9 @@ module "ec2_instance" {
   associate_public_ip_address = true    
   monitoring    = true
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
-  user_data = <<-EOL
-    #!/bin/bash -xe
-    sudo yum install python3-pip -y
-    sudo pip3 install --ignore-installed boto3 pandas scikit-learn mlflow
-    python3 -c "import boto3; boto3.client('s3', region_name='us-east-1').download_file('modular-mlops-bucket', 'scripts/train.py','/home/ec2-user/train.py')"
-    sudo touch /var/log/training.log && sudo chmod 666 /var/log/training.log
-    python3 /home/ec2-user/train.py >> /var/log/training.log 2>&1
-  EOL
+  user_data = templatefile("${path.module}/training-user-data.sh", {
+    loki_url = "http://${module.ec2_instance2.private_ip}:3100/loki/api/v1/push"
+  })
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]     
   key_name      = "mlops-key"                                 
   subnet_id     = "subnet-07d5896f8f57e5fab"
@@ -116,3 +111,9 @@ module "ec2_instance2" {
   key_name      = "mlops-key"                                 
   subnet_id     = "subnet-07d5896f8f57e5fab"
 }
+
+resource "aws_ssm_parameter" "loki_url" {
+    name  = "/ml/loki_url"
+    type  = "String"
+    value = "http://${module.ec2_instance2.public_ip}:3100/loki/api/v1/push"
+  }
