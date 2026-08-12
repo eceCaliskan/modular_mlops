@@ -77,9 +77,20 @@ def predict(features: WineFeatures):
        ]]
        prediction = model.predict(data)[0]
        confidence = model.predict_proba(data)[0].max()
+       if confidence<0.7: rollback()
        print(json.dumps({
            "stage": "prediction",
            "prediction": int(prediction),
            "confidence": round(float(confidence), 4)
        }))
        return {"prediction": int(prediction), "confidence": round(float(confidence), 4)}
+
+def rollback():
+        all_versions = client.search_model_versions("name='sk-learn-random-forest-reg-model'")
+        sorted_versions = sorted(all_versions, key=lambda v: int(v.version))                                                                                                                       
+        previous_version = sorted_versions[-2].version   
+        client.set_registered_model_alias(
+            name="sk-learn-random-forest-reg-model",
+            alias="champion",
+            version=previous_version
+        )

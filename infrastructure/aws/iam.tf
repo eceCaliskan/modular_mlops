@@ -77,6 +77,7 @@ resource "aws_iam_role_policy" "ec2_exec" {
                       "ec2:StopInstances", 
                       "ec2:DescribeInstances", 
                       "ssm:PutParameter", 
+                      "ssm:GetParameter",
                       "ssm:SendCommand"
                      ]
           Resource = "*"
@@ -95,3 +96,8 @@ resource "aws_iam_role_policy_attachment" "ec2_ssm" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"                                                                                        
 }                                                                                                                                                            
           
+
+resource "aws_iam_role_policy_attachment" "lambda_vpc" {
+    role       = aws_iam_role.lambda_exec.name
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
