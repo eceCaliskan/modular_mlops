@@ -6,24 +6,30 @@ import time
 region = 'us-east-1'
 ssm = boto3.client('ssm', region_name=region)
 
+'''
+    This method is responsible for pushing the logs to Loki API
+'''
 def push_to_loki(message):
-      loki_url = ssm.get_parameter(Name='/ml/loki_url')['Parameter']['Value']
-      payload = json.dumps({
-          "streams": [{
-              "stream": {"job": "lambda"},
-              "values": [[str(int(time.time() * 1e9)), message]]
-          }]
-      }).encode()
-      req = urllib.request.Request(
-          loki_url,
-          data=payload,
-          headers={"Content-Type": "application/json"}
-      )
-      try:
-          urllib.request.urlopen(req, timeout=5)
-      except Exception as e:
-          print(f"Loki push failed: {e}")
+    loki_url = ssm.get_parameter(Name='/ml/loki_url')['Parameter']['Value']
+    payload = json.dumps({
+        "streams": [{
+            "stream": {"job": "lambda"},
+            "values": [[str(int(time.time() * 1e9)), message]]
+        }]
+    }).encode()
+    req = urllib.request.Request(
+        loki_url,
+        data=payload,
+        headers={"Content-Type": "application/json"}
+    )
+    try:
+        urllib.request.urlopen(req, timeout=5)
+    except Exception as e:
+        print(f"Loki push failed: {e}")
 
+'''
+    This method is responsible for setting the location of the dataset file for EC2 to download
+'''
 def set_file_location(event):
     try:
         bucket = event['Records'][0]['s3']['bucket']['name']
@@ -39,7 +45,11 @@ def set_file_location(event):
     except:
         push_to_loki('LAMBDA EVENT: Error! Failed to set Dataset file location')
 
+"""
+    This method is responsible for starting the EC2 training instance and triggering train.py script
+"""
 def start_training_ec2():
+    
     try:
         ec2 = boto3.client('ec2', region_name=region)
         instances = ec2.describe_instances(Filters=[
