@@ -13,7 +13,7 @@ def push_to_loki(message):
     loki_url = ssm.get_parameter(Name='/ml/loki_url')['Parameter']['Value']
     payload = json.dumps({
         "streams": [{
-            "stream": {"job": "lambda"},
+            "stream": {"job": "data"},
             "values": [[str(int(time.time() * 1e9)), message]]
         }]
     }).encode()
@@ -41,9 +41,9 @@ def set_file_location(event):
                 Type='String',
                 Overwrite=True
         )
-        push_to_loki('LAMBDA EVENT: Success! Dataset file location successfully set as an ssm parameter ')
-    except:
-        push_to_loki('LAMBDA EVENT: Error! Failed to set Dataset file location')
+        push_to_loki('LAMBDA EVENT - SUCCESS: Dataset file location successfully set as an ssm parameter ')
+    except Exception as e:
+        push_to_loki(f'LAMBDA EVENT - ERROR: Failed to set Dataset file location. Exception: {e}')
 
 """
     This method is responsible for starting the EC2 training instance and triggering train.py script
@@ -65,13 +65,13 @@ def start_training_ec2():
             DocumentName='AWS-RunShellScript',
             Parameters={'commands': ['python3 /home/ec2-user/train.py']}
         )
-        push_to_loki('LAMBDA EVENT: Success! EC2 instance successfully started')
-    except:
-        push_to_loki('LAMBDA EVENT: Error! EC2 instance failed to start')
+        push_to_loki('LAMBDA EVENT - SUCCESS: EC2 instance successfully started')
+    except Exception as e:
+        push_to_loki(f'LAMBDA EVENT - FAILURE: EC2 instance failed to start. Exception: {e}')
 
 def lambda_handler(event, context):
-    push_to_loki('LAMBDA EVENT: Success! Dataset Successfully uploaded to S3 bucket')
+    push_to_loki('LAMBDA EVENT - SUCCESS: Dataset Successfully uploaded to S3 bucket')
     set_file_location(event)
     start_training_ec2()
-    return {'statusCode': 200, 'body': 'EC started'}
+    return {'statusCode': 200, 'body': 'EC2 Instance started'}
 
