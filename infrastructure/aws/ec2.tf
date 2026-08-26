@@ -87,6 +87,7 @@ module "ec2_instance2" {
   subnet_id     = "subnet-07d5896f8f57e5fab"
 }
 
+#Adding loki url as an ssm parameter to be used by lambda function
 resource "aws_ssm_parameter" "loki_url" {
     name  = "/ml/loki_url"
     type  = "String"

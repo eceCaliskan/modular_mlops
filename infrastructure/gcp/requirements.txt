@@ -1,2 +1,2 @@
 google-cloud-secret-manager                                                                                                                                                                                       
-  google-cloud-compute
+google-cloud-compute

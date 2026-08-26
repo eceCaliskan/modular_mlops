@@ -1,4 +1,3 @@
-#source https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/
 #Setting up the lambda function
 resource "aws_lambda_function" "my_function" {
     filename         = "${path.module}/function.zip"

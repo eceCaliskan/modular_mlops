@@ -1,4 +1,5 @@
- terraform {
+#Installing the required provider sources 
+terraform {
     required_version = ">= 1.0"
     required_providers {
       aws = {
@@ -10,24 +11,26 @@
         version = "~> 6.0"
       }
     }
-  }
+}
 
 #Define AWS provider
-  provider "aws" {
-    region = "us-east-1"
-  }
+provider "aws" {
+  region = "us-east-1"
+}
+
+#Define GCP provider
+provider "google" {
+  project = "project-a280d5fe-bdeb-4fbe-aa0" 
+  region  = "us-central1"
+}
 
 #Pointing to AWS folder
-  module "infrastructure" {
-    source = "./infrastructure/aws"
-  }
+module "infrastructure" {
+  source = "./infrastructure/aws"
+}
 
-  #Pointing to GCP folder
-  module "infrastructure2" {
-    source = "./infrastructure/gcp"
-  }
+#Pointing to GCP folder
+module "infrastructure2" {
+  source = "./infrastructure/gcp"
+}
 
-   provider "google" {
-    project = "project-a280d5fe-bdeb-4fbe-aa0" ## CHANGE WITH THE ACTUAL PROJECT ID
-    region  = "us-central1"
-  }

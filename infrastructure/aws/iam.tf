@@ -1,3 +1,4 @@
+#Creating lambda lambda_exec_role
 resource "aws_iam_role" "lambda_exec" {
   name = "lambda_exec_role"
 
@@ -15,6 +16,7 @@ resource "aws_iam_role" "lambda_exec" {
   })
 }
 
+#Creating ec2 ec2_exec_role
 resource "aws_iam_role" "ec2_exec" {
   name = "ec2_exec_role"
 
@@ -32,6 +34,7 @@ resource "aws_iam_role" "ec2_exec" {
   })
 }
 
+#Giving EC2 instances necessary permissions to communicate with S3 bucket and Lambda Functions
 resource "aws_iam_role_policy" "ec2_exec" {
     name = "ec2_exec"
     role = aws_iam_role.ec2_exec.id
@@ -63,7 +66,7 @@ resource "aws_iam_role_policy" "ec2_exec" {
     role = aws_iam_role.ec2_exec.name
   }
 
-
+#Giving lambda function necessary permissions to communicate with S3 bucket and EC2 instance
  resource "aws_iam_role_policy" "lambda_ec2_start" {
     name = "lambda_ec2_start"
     role = aws_iam_role.lambda_exec.id
@@ -96,7 +99,6 @@ resource "aws_iam_role_policy_attachment" "ec2_ssm" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"                                                                                        
 }                                                                                                                                                            
           
-
 resource "aws_iam_role_policy_attachment" "lambda_vpc" {
     role       = aws_iam_role.lambda_exec.name
     policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
