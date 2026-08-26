@@ -63,7 +63,7 @@ def start_training_ec2():
         ssm.send_command(
             InstanceIds=[instance_id],
             DocumentName='AWS-RunShellScript',
-            Parameters={'commands': ['python3 /home/ec2-user/train.py']}
+            Parameters={'commands': ['python3 /home/ec2-user/train.py >> /var/log/training.log 2>&1']}
         )
         push_to_loki('LAMBDA EVENT - SUCCESS: EC2 instance successfully started')
     except Exception as e:
