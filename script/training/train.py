@@ -220,15 +220,20 @@ def download_training_script():
 '''
 def training_pipeline():
     try:
+        logging.info(f"TRAINING - INFO: Download started.")
         download_training_script()
         df = pd.read_csv('/tmp/input.csv')
         print(df.columns.tolist())
         print(df)
+        logging.info(f"TRAINING - INFO: Preprocessing started.")
         features_df, labels_df = preprocess(df)
+        logging.info(f"TRAINING - INFO: Training started.")
         model, new_model_accuracy, new_model_f1 = train(features_df, labels_df)
         old_model_accuracy, old_model_f1, current_champion = get_old_champion_details()
         save_model(model, new_model_accuracy)
+        logging.info(f"TRAINING - INFO: Validation gate started.")
         if validation_gate(current_champion, old_model_accuracy, new_model_accuracy, old_model_f1, new_model_f1) == True:
+            logging.info(f"TRAINING - INFO: Model registry started started.")
             register_model(new_model_f1, new_model_accuracy, model)
             time.sleep(10) # Fixing the error of Exception: Registered Model with name=sk-learn-random-forest-reg-model not found 
             set_model_as_champion()

@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from mlflow import MlflowClient
 import logging
+import time
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s %(message)s'
@@ -75,6 +76,7 @@ class WineFeatures(BaseModel):
 @app.post("/predict")
 def predict(features: WineFeatures):
     try:
+       logging.info(f'Rollback start time: {time.time()}')
        model = load_champion()
        data = [[
            features.fixed_acidity,
@@ -116,6 +118,7 @@ def rollback():
             alias="champion",
             version=previous_version
         )
+        logging.info(f'Rollback end time: {time.time()}')
         logging.info(f"DEPLOYMENT - SUCCESS: Successfully rollback to the previous version of the model.")
     except Exception as e:
         logging.error(f"DEPLOYMENT - ERROR: Failure rolling back to previous version of the model. Exception: {e}")
