@@ -1,11 +1,15 @@
+#This file is responsible for creating the compute instance for GCP using Terraform
+# Main resources used https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_instance
+#
 #Defining the project, region and zone information for GCP
 provider "google" {
-  project     = "project-a280d5fe-bdeb-4fbe-aa0"
+  project     = "project-8fba7723-3f35-48db-ae1"
   region      = "us-central1"
   zone        = "us-central1-a"
 }
 
 #Create google compute instance called training
+# Source https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_instance
 resource "google_compute_instance" "default" {
   provider = google
   name = "training"

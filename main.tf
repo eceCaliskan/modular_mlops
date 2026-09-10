@@ -1,4 +1,5 @@
 #Installing the required provider sources 
+# Source https://developer.hashicorp.com/terraform/language/block/provider
 terraform {
     required_version = ">= 1.0"
     required_providers {
@@ -20,7 +21,7 @@ provider "aws" {
 
 #Define GCP provider
 provider "google" {
-  project = "project-a280d5fe-bdeb-4fbe-aa0" 
+  project = "project-8fba7723-3f35-48db-ae1" 
   region  = "us-central1"
 }
 

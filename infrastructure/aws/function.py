@@ -1,3 +1,11 @@
+#This file is responsible for creating Lambda function operations to store
+#dataset location to SSM and start training EC2 instance with command
+#Main resources used in this file as follows,
+#
+#https://docs.python.org/3/library/urllib.request.html 
+#https://docs.aws.amazon.com/code-library/latest/ug/python_3_ssm_code_examples.html
+#https://docs.aws.amazon.com/code-library/latest/ug/python_3_ec2_code_examples.html
+#
 import boto3
 import urllib.request
 import json
@@ -8,6 +16,7 @@ ssm = boto3.client('ssm', region_name=region)
 
 '''
     This method is responsible for pushing the logs to Loki API
+    source https://docs.python.org/3/library/urllib.request.html
 '''
 def push_to_loki(message):
     loki_url = ssm.get_parameter(Name='/ml/loki_url')['Parameter']['Value']
@@ -29,6 +38,7 @@ def push_to_loki(message):
 
 '''
     This method is responsible for setting the location of the dataset file for EC2 to download
+    source https://docs.aws.amazon.com/code-library/latest/ug/python_3_ssm_code_examples.html
 '''
 def set_file_location(event):
     try:
@@ -47,6 +57,7 @@ def set_file_location(event):
 
 """
     This method is responsible for starting the EC2 training instance and triggering train.py script
+    source https://docs.aws.amazon.com/code-library/latest/ug/python_3_ec2_code_examples.html
 """
 def start_training_ec2():
     

@@ -1,3 +1,14 @@
+#This file is responsible for serving the model and rollback to the previous version
+# Main resources used 
+# https://stackoverflow.com/questions/13479295/python-using-basicconfig-method-to-log-to-console-and-file
+# https://docs.aws.amazon.com/boto3/latest/reference/services/ec2/client/describe_instances.html 
+# https://mlflow.org/docs/latest/api_reference/python_api/mlflow.sklearn.html
+# https://fastapi.tiangolo.com/tutorial/body/#import-pydantics-basemodel
+# https://mlflow.org/docs/latest/api_reference/python_api/mlflow.client.html
+#
+#Open API used to logging issue with the prompt 'python logging doesn't print out the info logs to Grafana, how to fix this issue?'
+#Below code returned from Claude, I researched on the internet if the coded is correct before the implementation and found resource below
+#https://stackoverflow.com/questions/13479295/python-using-basicconfig-method-to-log-to-console-and-file
 import json
 import subprocess
 import boto3
@@ -7,6 +18,10 @@ from pydantic import BaseModel
 from mlflow import MlflowClient
 import logging
 import time
+
+#Open API used to fix the issue with the prompt 'python logging doesn't print out the info logs to Grafana, how to fix this issue?'
+#Below code returned from Claude, I researched on the internet if the code is correct before the implementation and found resource below
+#https://stackoverflow.com/questions/13479295/python-using-basicconfig-method-to-log-to-console-and-file
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s %(message)s'
@@ -19,6 +34,8 @@ def home():
 
 '''
     This method is responsible for returning the ID of the Monitoring_Deployment_Registry instance
+    Below resource is used for the implementation
+    https://docs.aws.amazon.com/boto3/latest/reference/services/ec2/client/describe_instances.html 
 '''
 def get_monitoring_deployment_registry_instance():
     try:
@@ -46,6 +63,7 @@ def get_monitoring_deployment_registry_instance():
 
 '''
     This method is responsible for loading the latest champion
+    Source = https://mlflow.org/docs/latest/api_reference/python_api/mlflow.sklearn.html
 '''
 def load_champion():
     try:
@@ -72,6 +90,9 @@ class WineFeatures(BaseModel):
 
 '''
     This endpoint is responsible for serving the model, calculating the confidence and initiate the rollback if the confidence is below threshold
+    Sources used 
+    https://mlflow.org/docs/latest/api_reference/python_api/mlflow.sklearn.html
+    https://fastapi.tiangolo.com/tutorial/body/#import-pydantics-basemodel
 '''
 @app.post("/predict")
 def predict(features: WineFeatures):
@@ -107,6 +128,8 @@ def predict(features: WineFeatures):
 
 '''
     This method is responsible for rolling back to the previous version of the model
+    Sources used
+    https://mlflow.org/docs/latest/api_reference/python_api/mlflow.client.html
 '''
 def rollback():
     try:

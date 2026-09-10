@@ -1,3 +1,9 @@
+#This file is responsible for creating EC2 components using Terraform in AWS. 
+#Primary resource used in this file is harshicorp/aws documentation about EC2 
+#
+# https://registry.terraform.io/modules/terraform-aws-modules/ec2-instance/aws/latest
+#
+
 #Set EC2 instance access to the internet and allow SSH
 resource "aws_security_group" "allow_ssh" {                                                                                                                
     name        = "allow_ssh"                                                                                                                                
@@ -55,6 +61,7 @@ resource "aws_security_group" "allow_ssh" {
  }   
 
 #Create EC2 instance for training
+#Source https://registry.terraform.io/modules/terraform-aws-modules/ec2-instance/aws/latest
 module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   name = "Training"
@@ -72,6 +79,7 @@ module "ec2_instance" {
 }
 
 #Create EC2 instance for registry, monitoring and deployment
+# Source https://registry.terraform.io/modules/terraform-aws-modules/ec2-instance/aws/latest
 module "ec2_instance2" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   name = "Monitoring_Deployment_Registry"

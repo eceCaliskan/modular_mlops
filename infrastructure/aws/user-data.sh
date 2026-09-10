@@ -6,7 +6,8 @@ python3 -m pip install boto3 fastapi[standard] gunicorn mlflow uvicorn scikit-le
 #Downloading the deploy.py file from S3 bucket as main.py                                                     
 python3 -c "import boto3; boto3.client('s3', region_name='us-east-1').download_file('modular-mlops-bucket', 'scripts/deploy.py','/home/ec2-user/main.py')"                                 
                                                                                                                                                                                                                                                                                                                                                       
-#Installing Grafana                                                                                                                                                                       
+#Installing Grafana                     
+#Source https://xtom.com/blog/what-is-grafana-and-how-to-install-it/                                                                                                                                                  
 cat > /etc/yum.repos.d/grafana.repo << 'EOF'                                                                                                                                               
 [grafana]
 name=grafana
@@ -19,6 +20,7 @@ EOF
 yum install -y grafana
 
 #Setting Up mlflow to serve it in port 8080 and defining the destination of the log file and artifact
+#Source https://mlflow.org/docs/latest/self-hosting/architecture/tracking-server/
 mkdir -p /mlflow
 cat > /etc/systemd/system/mlflow.service << 'EOF'
 [Unit]
@@ -40,6 +42,7 @@ WantedBy=multi-user.target
 EOF
 
 #Setting Up fastapi to serve it in port 8000 and defining the destination of the log file
+#Source https://stribny.name/posts/fastapi-production/
 cat > /etc/systemd/system/fastapi.service << 'EOF'
 [Unit]
 Description=FastAPI Deployment Server
@@ -55,7 +58,9 @@ StandardError=append:/var/log/deployment.log
 WantedBy=multi-user.target
 EOF
 
-#Installing Loki
+#Installing Loki. Sources:
+#https://grafana.com/docs/loki/latest/configure/examples/configuration-examples/
+#https://grafana.com/docs/loki/latest/setup/install/local/
 useradd --system loki || true
 mkdir -p /etc/loki
 mkdir -p /var/lib/loki
@@ -66,6 +71,7 @@ mv loki-linux-amd64 /usr/local/bin/loki
 chmod +x /usr/local/bin/loki
 
 #Creating Loki config.yaml to serve it in port 3100
+# Source https://grafana.com/docs/loki/latest/configure/examples/configuration-examples/
 sudo tee /etc/loki/config.yaml << 'EOF'
 auth_enabled: false                                            
 server:
@@ -109,7 +115,8 @@ chown -R loki:loki /etc/loki
 chown -R loki:loki /var/lib/loki
 useradd --system --no-create-home promtail || true
 
-#Installing Promtail                                                                                                                                           
+# Installing Up Promtail
+#Source https://grafana.com/docs/loki/latest/setup/install/local/                                                                                                                                    
 LOKI_VERSION="2.9.4"                                                                                                                                          
 cd /tmp                                                                                                                                                       
 wget https://github.com/grafana/loki/releases/download/v${LOKI_VERSION}/promtail-linux-amd64.zip
@@ -118,7 +125,9 @@ mv promtail-linux-amd64 /usr/local/bin/promtail
 chmod +x /usr/local/bin/promtail                                                                                                                                                                                                                                                                    
 mkdir -p /etc/promtail /var/lib/promtail
 
-#Setting Up Promtail config.yaml to listen the logs from deployment.log and mlflow.log files
+#Setting Up Promtail config.yaml to listen the logs from deployment.log and mlflow.log files Sources:
+#https://levelup.gitconnected.com/ruby-on-rails-monitor-you-app-logs-with-grafana-loki-fb33dc79dab7
+#https://blog.devops.dev/capture-store-and-query-logs-with-confidence-building-a-loki-promtail-grafana-pipeline-782a55e6a100
 cat > /etc/promtail/config.yaml << 'EOF'
 server:
   http_listen_port: 9080
@@ -143,6 +152,7 @@ scrape_configs:
 EOF
 
 #Adding the config.yaml to promptail service
+#Source https://sbcode.net/grafana/install-promtail-service/
 cat > /etc/systemd/system/promtail.service << 'EOF'
 [Unit]
 Description=Promtail
@@ -156,6 +166,7 @@ WantedBy=multi-user.target
 EOF
 
 #Adding Loki as Grafana default resource  
+#Source https://grafana.com/docs/grafana/latest/datasources/loki/configure/
 mkdir -p /etc/grafana/provisioning/datasources
 cat > /etc/grafana/provisioning/datasources/loki.yaml << 'EOF'
 apiVersion: 1

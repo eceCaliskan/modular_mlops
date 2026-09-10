@@ -1,3 +1,8 @@
+#This file is responsible for setting permissions in AWS using Terraform
+#Main resource that is used to create all of the permission below is hashicorp documentation about iam
+#https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest
+#
+
 #Creating lambda lambda_exec_role
 resource "aws_iam_role" "lambda_exec" {
   name = "lambda_exec_role"

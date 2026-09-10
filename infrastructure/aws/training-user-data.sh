@@ -7,7 +7,8 @@ python3 -c "import boto3; boto3.client('s3', region_name='us-east-1').download_f
 'scripts/train.py','/home/ec2-user/train.py')"
 sudo touch /var/log/training.log && sudo chmod 666 /var/log/training.log
 
-# Setting Up Promtail
+# Installing Up Promtail
+#https://grafana.com/docs/loki/latest/setup/install/local/
 LOKI_VERSION="2.9.4"
 cd /tmp
 wget -q https://github.com/grafana/loki/releases/download/v$${LOKI_VERSION}/promtail-linux-amd64.zip
@@ -17,6 +18,9 @@ chmod +x /usr/local/bin/promtail
 mkdir -p /etc/promtail /var/lib/promtail
 
 #Configuring config.yaml for promtail to listen to log training.log and push the log to Loki
+#Following resources used for setup
+#https://levelup.gitconnected.com/ruby-on-rails-monitor-you-app-logs-with-grafana-loki-fb33dc79dab7
+#https://blog.devops.dev/capture-store-and-query-logs-with-confidence-building-a-loki-promtail-grafana-pipeline-782a55e6a100
 cat > /etc/promtail/config.yaml << 'EOF'
 server:
     http_listen_port: 9080
@@ -35,6 +39,7 @@ scrape_configs:
 EOF
 
 #Adding the config.yaml to promptail service
+##source used https://sbcode.net/grafana/install-promtail-service/
 cat > /etc/systemd/system/promtail.service << 'EOF'
 [Unit]
 Description=Promtail

@@ -1,4 +1,9 @@
+#This file generates google cloud function in GCP
+#Main resource used in the file
+#https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudfunctions2_function
+
 #Creating google cloud functions
+##https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudfunctions2_function
 resource "google_cloudfunctions2_function" "function" {
   name        = "function-test"
   description = "My function"
@@ -24,6 +29,7 @@ resource "google_cloudfunctions2_function" "function" {
   }      
 }
 
+##https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudfunctions2_function
  resource "google_storage_bucket_object" "function_zip" {
     name   = "function.zip"
     bucket = google_storage_bucket.static.name

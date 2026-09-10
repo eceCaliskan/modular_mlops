@@ -1,3 +1,8 @@
+#This file is responsible for triggering compute instance in GCP using cloud function
+#Main resources used: 
+# https://codelabs.developers.google.com/codelabs/secret-manager-python#5
+# https://docs.cloud.google.com/python/docs/reference/compute/latest/google.cloud.compute_v1.services.instances.InstancesClient
+#
 from google.cloud import secretmanager, compute_v1
 
 def trigger_training(event, context):

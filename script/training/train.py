@@ -8,6 +8,9 @@ from sklearn.metrics import accuracy_score, f1_score
 import mlflow
 from mlflow import MlflowClient
 import logging
+#Open API used to logging issue with the prompt 'python logging doesn't print out the info logs to Grafana, how to fix this issue?'
+#Below code returned from Claude, I researched on the internet if the coded is correct before the implementation and found resource below
+#https://stackoverflow.com/questions/13479295/python-using-basicconfig-method-to-log-to-console-and-file
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s %(message)s'
@@ -16,6 +19,7 @@ client = None
 
 '''
     This method is responsible for returning the ID of the Monitoring_Deployment_Registry instance
+    Source used https://docs.aws.amazon.com/boto3/latest/reference/services/ec2/client/describe_instances.html 
 '''
 def get_monitoring_deployment_registry_instance():
     try:
@@ -44,6 +48,7 @@ def get_monitoring_deployment_registry_instance():
 '''
     This method is responsible for preprocessing the dataset to convert them to binary
     Putting into account the quality of the wine with the df['quality'] >= 7
+    Source used https://www.golinuxcloud.com/pandas-convert-column-to-float/
 '''
 def preprocess(df):
     try:
@@ -62,6 +67,9 @@ def preprocess(df):
 
 '''
     This method is responsible for stopping the Training EC2 instance at the end of the training
+    Sources used 
+    https://docs.aws.amazon.com/boto3/latest/reference/services/ec2/client/describe_instances.html 
+    https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html
 '''
 def stop_training_instance():
     try:
@@ -86,6 +94,7 @@ def stop_training_instance():
 
 '''
     This method is responsible for training the dataset and return the model, accuracy and f1 scores
+    Sources used https://www.datacamp.com/tutorial/random-forests-classifier-python
 '''
 def train(features_df, labels_df):
     try:
@@ -102,6 +111,7 @@ def train(features_df, labels_df):
 
 '''
     This method is responsible for saving the model to S3 bucket
+    Source https://docs.aws.amazon.com/boto3/latest/reference/services/s3/client/upload_file.html
 '''
 def save_model(model, accuracy):
     try:
@@ -117,6 +127,7 @@ def save_model(model, accuracy):
     
 '''
     This method is responsible for returning the current champion in MLflow with its metrics
+    Source https://mlflow.org/docs/latest/api_reference/python_api/mlflow.client.html
 '''
 def get_old_champion_details():
     try:
@@ -137,6 +148,7 @@ def get_old_champion_details():
 
 '''
     This method is used for registering the given model to MLflow 
+    Source https://mlflow.org/docs/latest/api_reference/python_api/mlflow.client.html
 '''
 def register_model(f1, accuracy, model):
     try:
@@ -156,6 +168,7 @@ def register_model(f1, accuracy, model):
         return None, None, old_champion   
 '''
     This method is responsible for setting the current model alias to champion
+    Source https://mlflow.org/docs/latest/api_reference/python_api/mlflow.client.html
 '''
 def set_model_as_champion():
     try:
@@ -188,6 +201,7 @@ def validation_gate(current_champion, old_model_accuracy, new_model_accuracy, ol
     
 '''
     This method is responsible for setting up the MLflow experiment
+    Source 
 '''
 def set_up_mlflow():
     try:
@@ -202,6 +216,7 @@ def set_up_mlflow():
 
 '''
     This method is responsible for downloading the train.py file from S3 bucket 
+    https://mlflow.org/docs/latest/api_reference/python_api/mlflow.client.html
 '''
 def download_training_script():
     try:
