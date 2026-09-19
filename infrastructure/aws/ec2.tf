@@ -1,6 +1,8 @@
 #This file is responsible for creating EC2 components using Terraform in AWS. 
 #Primary resource used in this file is harshicorp/aws documentation about EC2 
 #
+#This file is a part of OUT2 A reproducible open-source MLOps pipeline modules implemented with IaC approach.
+#
 # https://registry.terraform.io/modules/terraform-aws-modules/ec2-instance/aws/latest
 #
 

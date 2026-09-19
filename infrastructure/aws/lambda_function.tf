@@ -1,6 +1,9 @@
 #This file is responsible for setting up the lambda function using Terraform
 #The resource is used to define this component is hashicorp documentation about lambda functions
-#https://registry.terraform.io/modules/terraform-aws-modules/lambda/aws/latest
+#
+##This file is a part of OUT2 A reproducible open-source MLOps pipeline modules implemented with IaC approach.
+#
+#Used resources: https://registry.terraform.io/modules/terraform-aws-modules/lambda/aws/latest
 
 #Setting up the lambda function
 resource "aws_lambda_function" "my_function" {

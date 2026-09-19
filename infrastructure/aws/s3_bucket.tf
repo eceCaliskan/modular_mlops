@@ -1,4 +1,7 @@
 #This file is responsible for setting up the S3 bucket in AWS vendor using Terraform.
+#
+#This file is a part of OUT2 A reproducible open-source MLOps pipeline modules implemented with IaC approach.
+#
 #Main resources used as follows
 #https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/
 #https://registry.terraform.io/modules/terraform-aws-modules/s3-bucket/aws/latest

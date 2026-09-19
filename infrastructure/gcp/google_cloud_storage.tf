@@ -1,4 +1,7 @@
 #This file is responsible for creating google storage bucket in GCP
+#
+#This file is a part of OUT2 A reproducible open-source MLOps pipeline modules implemented with IaC approach.
+#
 #Main sources used
 #https://registry.terraform.io/providers/hashicorp/google/latest/docs/list-resources/google_storage_bucket
 #https://registry.terraform.io/providers/hashicorp/google/latest/docs/list-resources/google_secret_manager_secret_iam
@@ -25,7 +28,7 @@ resource "google_secret_manager_secret" "ml_input_file" {
 #Assigning IAM role to objects from the storage bucket
 #https://registry.terraform.io/providers/hashicorp/google/latest/docs/list-resources/google_secret_manager_secret_iam
 resource "google_storage_bucket_iam_member" "gcf_access" {                                                                                                                                                              
-  bucket = "gcf-sources-614602581181-us-central1"                                                                                                                                                                       
+  bucket = "gcf-v2-sources-397832183085-us-central1"                                                                                                                                                                       
   role   = "roles/storage.objectViewer"                                                                                                                                                                                 
-  member = "serviceAccount:614602581181-compute@developer.gserviceaccount.com"                                                                                                                                          
+  member = "serviceAccount:397832183085-compute@developer.gserviceaccount.com"                                                                                                                                          
 }   

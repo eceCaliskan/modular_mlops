@@ -1,4 +1,11 @@
 #This file is responsible for triggering compute instance in GCP using cloud function
+#This file is part of OUT3: Annotated source code and automation scripts that expose orchestration logic,
+# model version comparison mechanisms, versioning, rollback processes, deployment workflows and pipeline 
+# observability configurations including monitoring dashboards and logging templates.
+#
+#This file specificaly contains the event-driven orchestration logic.
+#
+#
 #Main resources used: 
 # https://codelabs.developers.google.com/codelabs/secret-manager-python#5
 # https://docs.cloud.google.com/python/docs/reference/compute/latest/google.cloud.compute_v1.services.instances.InstancesClient
@@ -17,9 +24,5 @@ def trigger_training(event, context):
       compute = compute_v1.InstancesClient()
       #Starting the compute instance
       compute.start(project="project-a280d5fe-bdeb-4fbe-aa0", zone="us-central1-a", instance="default")
-
-
-
-
 
 

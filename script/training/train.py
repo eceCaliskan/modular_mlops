@@ -1,3 +1,22 @@
+#This file is responsible for serving the model and rollback to the previous version
+#
+#This file is part of OUT3: Annotated source code and automation scripts that expose orchestration logic,
+#model version comparison mechanisms, versioning, rollback processes, deployment workflows and pipeline 
+#observability configurations including monitoring dashboards and logging templates.
+#
+#This file specificaly contains the model version comparison mechanisms, versioning, orchestration logic.
+#
+#Main resources used 
+#https://stackoverflow.com/questions/13479295/python-using-basicconfig-method-to-log-to-console-and-file
+#https://www.golinuxcloud.com/pandas-convert-column-to-float/
+#https://stackoverflow.com/questions/13479295/python-using-basicconfig-method-to-log-to-console-and-file
+#https://docs.aws.amazon.com/boto3/latest/reference/services/ec2/client/describe_instances.html 
+#https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html
+#https://www.datacamp.com/tutorial/random-forests-classifier-python
+#https://docs.aws.amazon.com/boto3/latest/reference/services/s3/client/upload_file.html
+#https://mlflow.org/docs/latest/api_reference/python_api/mlflow.client.html
+
+
 import pickle
 import time
 import boto3
@@ -8,7 +27,7 @@ from sklearn.metrics import accuracy_score, f1_score
 import mlflow
 from mlflow import MlflowClient
 import logging
-#Open API used to logging issue with the prompt 'python logging doesn't print out the info logs to Grafana, how to fix this issue?'
+#Open AI used to logging issue with the prompt 'python logging doesn't print out the info logs to Grafana, how to fix this issue?'
 #Below code returned from Claude, I researched on the internet if the coded is correct before the implementation and found resource below
 #https://stackoverflow.com/questions/13479295/python-using-basicconfig-method-to-log-to-console-and-file
 logging.basicConfig(
@@ -112,6 +131,11 @@ def train(features_df, labels_df):
 '''
     This method is responsible for saving the model to S3 bucket
     Source https://docs.aws.amazon.com/boto3/latest/reference/services/s3/client/upload_file.html
+    #This file is part of OUT3: Annotated source code and automation scripts that expose orchestration logic,
+    #model version comparison mechanisms, versioning, rollback processes, deployment workflows and pipeline 
+    #observability configurations including monitoring dashboards and logging templates.
+    #
+    #This method specificaly contains the versioning.
 '''
 def save_model(model, accuracy):
     try:
@@ -169,6 +193,12 @@ def register_model(f1, accuracy, model):
 '''
     This method is responsible for setting the current model alias to champion
     Source https://mlflow.org/docs/latest/api_reference/python_api/mlflow.client.html
+
+    #This file is part of OUT3: Annotated source code and automation scripts that expose orchestration logic,
+    #model version comparison mechanisms, versioning, rollback processes, deployment workflows and pipeline 
+    #observability configurations including monitoring dashboards and logging templates.
+    #
+    #This method specificaly contains the versioning.
 '''
 def set_model_as_champion():
     try:
@@ -187,6 +217,12 @@ def set_model_as_champion():
 '''
     This method is responsible for comparing the new model metrics with the old model metrics
     Core mechanism of the validation gate
+
+    #This file is part of OUT3: Annotated source code and automation scripts that expose orchestration logic,
+    #model version comparison mechanisms, versioning, rollback processes, deployment workflows and pipeline 
+    #observability configurations including monitoring dashboards and logging templates.
+    #
+    #This method specificaly contains the model version comparison mechanisms.
 '''
 def validation_gate(current_champion, old_model_accuracy, new_model_accuracy, old_model_f1, new_model_f1):
     try:

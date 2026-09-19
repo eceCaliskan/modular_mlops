@@ -1,4 +1,11 @@
 #!/bin/bash   
+#This file is part of OUT3: Annotated source code and automation scripts that expose orchestration logic,
+# model version comparison mechanisms, versioning, rollback processes, deployment workflows and pipeline 
+# observability configurations including monitoring dashboards and logging templates.
+#
+#This file specificaly contains part of pipeline observability configurations including monitoring dashboards and logging templates.
+#
+#
 yum update -y                                                                                                                                                                                                                                                                                                                                                                 
 yum install -y python3-pip wget unzip  
 #Downloading necessary packets                                                                                                                                                    

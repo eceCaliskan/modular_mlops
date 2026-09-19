@@ -1,4 +1,7 @@
 #This file is responsible for creating the compute instance for GCP using Terraform
+#
+#This file is a part of OUT2 A reproducible open-source MLOps pipeline modules implemented with IaC approach.
+#
 # Main resources used https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_instance
 #
 #Defining the project, region and zone information for GCP

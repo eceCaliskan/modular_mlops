@@ -1,4 +1,7 @@
 #This file is responsible for setting permissions in AWS using Terraform
+#
+#This file is a part of OUT2 A reproducible open-source MLOps pipeline modules implemented with IaC approach.
+#
 #Main resource that is used to create all of the permission below is hashicorp documentation about iam
 #https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest
 #

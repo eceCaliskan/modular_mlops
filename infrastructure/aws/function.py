@@ -1,6 +1,14 @@
 #This file is responsible for creating Lambda function operations to store
 #dataset location to SSM and start training EC2 instance with command
+#
+#This file is part of OUT3: Annotated source code and automation scripts that expose orchestration logic,
+# model version comparison mechanisms, versioning, rollback processes, deployment workflows and pipeline 
+# observability configurations including monitoring dashboards and logging templates.
+#
+#This file specificaly contains the event-driven orchestration logic.
+#
 #Main resources used in this file as follows,
+#
 #
 #https://docs.python.org/3/library/urllib.request.html 
 #https://docs.aws.amazon.com/code-library/latest/ug/python_3_ssm_code_examples.html

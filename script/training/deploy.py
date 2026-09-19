@@ -1,4 +1,12 @@
 #This file is responsible for serving the model and rollback to the previous version
+#
+#This file is part of OUT3: Annotated source code and automation scripts that expose orchestration logic,
+#model version comparison mechanisms, versioning, rollback processes, deployment workflows and pipeline 
+#observability configurations including monitoring dashboards and logging templates.
+#
+#This file specificaly contains the rollback processes, deployment workflows.
+#
+#
 # Main resources used 
 # https://stackoverflow.com/questions/13479295/python-using-basicconfig-method-to-log-to-console-and-file
 # https://docs.aws.amazon.com/boto3/latest/reference/services/ec2/client/describe_instances.html 
@@ -6,7 +14,7 @@
 # https://fastapi.tiangolo.com/tutorial/body/#import-pydantics-basemodel
 # https://mlflow.org/docs/latest/api_reference/python_api/mlflow.client.html
 #
-#Open API used to logging issue with the prompt 'python logging doesn't print out the info logs to Grafana, how to fix this issue?'
+#Open AI used to logging issue with the prompt 'python logging doesn't print out the info logs to Grafana, how to fix this issue?'
 #Below code returned from Claude, I researched on the internet if the coded is correct before the implementation and found resource below
 #https://stackoverflow.com/questions/13479295/python-using-basicconfig-method-to-log-to-console-and-file
 import json
@@ -19,7 +27,7 @@ from mlflow import MlflowClient
 import logging
 import time
 
-#Open API used to fix the issue with the prompt 'python logging doesn't print out the info logs to Grafana, how to fix this issue?'
+#Open AI used to fix the issue with the prompt 'python logging doesn't print out the info logs to Grafana, how to fix this issue?'
 #Below code returned from Claude, I researched on the internet if the code is correct before the implementation and found resource below
 #https://stackoverflow.com/questions/13479295/python-using-basicconfig-method-to-log-to-console-and-file
 logging.basicConfig(
@@ -90,6 +98,14 @@ class WineFeatures(BaseModel):
 
 '''
     This endpoint is responsible for serving the model, calculating the confidence and initiate the rollback if the confidence is below threshold
+    
+    
+    This method is part of OUT3: Annotated source code and automation scripts that expose orchestration logic,
+    model version comparison mechanisms, versioning, rollback processes, deployment workflows and pipeline 
+    observability configurations including monitoring dashboards and logging templates.
+   
+    Containing deployment workflows and triggering rollback processes
+
     Sources used 
     https://mlflow.org/docs/latest/api_reference/python_api/mlflow.sklearn.html
     https://fastapi.tiangolo.com/tutorial/body/#import-pydantics-basemodel
@@ -128,6 +144,13 @@ def predict(features: WineFeatures):
 
 '''
     This method is responsible for rolling back to the previous version of the model
+
+    This method is part of OUT3: Annotated source code and automation scripts that expose orchestration logic,
+    model version comparison mechanisms, versioning, rollback processes, deployment workflows and pipeline 
+    observability configurations including monitoring dashboards and logging templates.
+   
+    Containing rollback mechanism
+
     Sources used
     https://mlflow.org/docs/latest/api_reference/python_api/mlflow.client.html
 '''

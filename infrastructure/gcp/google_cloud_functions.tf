@@ -1,5 +1,8 @@
 #This file generates google cloud function in GCP
 #Main resource used in the file
+#
+#This file is a part of OUT2 A reproducible open-source MLOps pipeline modules implemented with IaC approach.
+#
 #https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudfunctions2_function
 
 #Creating google cloud functions
