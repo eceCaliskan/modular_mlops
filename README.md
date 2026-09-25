@@ -59,3 +59,47 @@ Infrastructure | Terraform | Infrastructure as Code provisioning |
 │   ├── 📄 train.py # This file preprocess and trains the model, implement validation gate and registers the model to MLflow
 └── 📄 main.tf # This file installs and defines AWS and GCP in Terraform
 ```
+
+## Deployment
+
+The full pipeline requires cloud accounts and cannot run without them. 
+
+### Prerequisites
+------
+- Terraform is installed https://developer.hashicorp.com/terraform/install
+- An AWS account and GCP account for portability with IAM user permissions
+- For GCP, enable required APIs
+    - Cloud Storage: storage.googleapis.com 
+    - Compute Engine: compute.googleapis.com 
+    - Cloud Function: cloudfunction.googleapis.com
+    - Cloud Build: cloudbuild.googleapis.com
+    - Logging: logging.googleapis.com
+    - IAM: iam.googleapis.com
+    - Event Triggering: eventarc.googleapis.com and pubsub.googleapis.com
+    - Secret Manager: secretmanager.googleapis.com
+    - Resource Manager: cloudresourcemanager.googleapis.com
+- Download the repository
+- Open the project in Code Editor
+- Change the project name and region based on your settings before provisioning
+
+### Steps
+-----
+#### AWS
+1. Install AWS CLI from https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+2. Set AWS credentials using https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html
+3. Make sure the user has the right permissions
+4. Navigate to `infrastructure/aws` folder
+5. Run `Terraform init`then `terraform apply` answer 'yes' to the pop-up question
+6. Check your AWS console
+7. Navigate to S3 bucket component
+8. Add the dataset, and training, and deployment to the `dataset/` and `scripts/` folders
+
+#### GCP
+1. Install GCP CLI from https://docs.cloud.google.com/sdk/docs/install-sdk
+2. Set GCP credentials using https://docs.cloud.google.com/docs/authentication/provide-credentials-adc
+3. Make sure the user has the right permissions
+4. Navigate to `infrastructure/gcp` folder
+5. Run `Terraform init`then `terraform apply` answer 'yes' to the pop-up question
+6. Check your GCP console
+The modular components must be provisioned
+* In order to run both vendors, Run `terraform init`then `terraform apply` answer 'yes' to the pop-up question from the root folder.
