@@ -8,6 +8,8 @@ The pipeline is implmented in Amazon Web Services (AWS) and modular components a
 
 The modularity of the pipelines is achieved by using independent cloud-native modular components.
 
+All of the source code, infrastructure definitions, and configuration in this repository are my own work. The code adapted from documentation and examples are indicated in that specific files.
+
 ## Overview
 
 The pipeline investigates the research questions below:
