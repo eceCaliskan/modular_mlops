@@ -10,6 +10,8 @@ The modularity of the pipelines is achieved by using independent cloud-native mo
 
 All of the source code, infrastructure definitions, and configuration in this repository are my own work. The code adapted from documentation and examples are indicated in that specific files.
 
+Deployment Guide for cloud providers is provided under `docs/out4-project-guide/Modular MLOps Deployment Guide.pdf`
+
 ## Overview
 
 The pipeline investigates the research questions below:
@@ -41,6 +43,9 @@ Infrastructure | Terraform | Infrastructure as Code provisioning |
 │   │   ├── 📄 WineQTcopy_fault_injection.csv # Evaluation dataset
 │   │   ├── 📄 WineQTcopy_lower_accuracy_2.csv # Evaluation dataset
 │   │   ├── 📄 WineQTcopy_lower_accuracy.csv # Evaluation dataset
+├── 📁 docs # includes Output 4 documentation
+|   |   ├── 📁 docs # includes Output 4 documentation
+│   │   |    ├── 📄 Modular MLOps Deployment Guide.pdf # Output4 deployment guide for providers
 ├── 📁 infrastructure # This folder defines the modular components as IaC definitions
 │   ├── 📂 aws # This folder contains aws infrastructure components
 │   │   ├── 📄 ec2.tf # This file contains Training and Monitoring_Deployment_Registry Terraform EC2 instance definitions
